@@ -6,20 +6,20 @@ package ninja.paranoidandroid.ttm2.model;
 
 public class ProjectUser {
 
-    private String name;
+    private String email;
 
     public ProjectUser() {
     }
 
-    public ProjectUser(String name) {
-        this.name = name;
+    public ProjectUser(String email) {
+        this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

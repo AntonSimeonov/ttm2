@@ -9,6 +9,7 @@ public class User {
     private String name;
     private String email;
     private String profession;
+    private String projects = "init";
 
     public User() {
     }
@@ -17,6 +18,14 @@ public class User {
         this.name = name;
         this.email = email;
         this.profession = profession;
+    }
+
+    public String getProjects() {
+        return projects;
+    }
+
+    public void setProjects(String projects) {
+        this.projects = projects;
     }
 
     public String getName() {

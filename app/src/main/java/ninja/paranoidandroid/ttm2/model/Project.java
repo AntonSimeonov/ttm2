@@ -1,10 +1,12 @@
 package ninja.paranoidandroid.ttm2.model;
 
+import java.io.Serializable;
+
 /**
  * Created by anton on 08.12.16.
  */
 
-public class Project {
+public class Project implements Serializable{
 
     private String name;
     private String description;
@@ -13,6 +15,7 @@ public class Project {
     private double budget;
     private String goal;
     private String result;
+    private String users = "init";
 
     public Project() {
     }
@@ -25,6 +28,14 @@ public class Project {
         this.budget = budget;
         this.result = result;
         this.goal = goal;
+    }
+
+    public String getUsers() {
+        return users;
+    }
+
+    public void setUsers(String users) {
+        this.users = users;
     }
 
     public String getName() {
