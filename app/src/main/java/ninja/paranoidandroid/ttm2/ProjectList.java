@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,10 +30,11 @@ public class ProjectList extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
 
     //firebase ui
-    private FirebaseListAdapter<Project> mProjectListAdapter;
+    private FirebaseListAdapter<UserProject> mProjectListAdapter;
 
     //UI
     private ListView mProjectListView;
+    private TextView mProjectNameTextView;
 
     //User data
     private String mUserFirebaseAuthId;
@@ -48,6 +51,7 @@ public class ProjectList extends AppCompatActivity {
         initFirebaseElements();
         getFirebaseAuthUserId();
         initUIElements();
+        setListViewOnItemClickListener();
 
         if(mFirebaseAuth.getCurrentUser() == null){
             //go to login screen
@@ -103,10 +107,10 @@ public class ProjectList extends AppCompatActivity {
 
     private void writeNewProjectToFireBase(Intent intent){
         Project project = null;
-       // project = intent.getParcelableExtra(Constants.Extra.ADD_PROJECT_NEW_PROJECT);
-        if(project == null) {
+        project = intent.getParcelableExtra(Constants.Extra.ADD_PROJECT_NEW_PROJECT);
+        if(project != null) {
 
-            project = new Project("Proj name", "project description", "22.4.4", "3434", 3535, "result", "hjsdfj");
+           //project = new Project("Proj name", "project description", "22.4.4", "3434", 3535, "result", "hjsdfj");
             UserProject newUserProject = new UserProject(project.getName());
             ProjectUser newProjectUser = new ProjectUser(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
@@ -129,4 +133,44 @@ public class ProjectList extends AppCompatActivity {
     private void getFirebaseAuthUserId(){
        mUserFirebaseAuthId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Log.i(Constants.Log.TAG_PROJECT_LIST, "path is " + Constants.Firebase.USER + "/" + mUserFirebaseAuthId + "/" + Constants.Firebase.USER_PROJECTS);
+
+        showProjectList();
+    }
+
+    private void showProjectList(){
+        //Log.i(Constants.Log.TAG_PROJECT_LIST, "path is " + Constants.Firebase.USER + "/" + mUserFirebaseAuthId + "/" + Constants.Firebase.USER_PROJECTS);
+
+        DatabaseReference userProjectReference = mDatabaseReference.child(Constants.Firebase.USER + "/" + mUserFirebaseAuthId + "/" + Constants.Firebase.USER_PROJECTS);
+        mProjectListAdapter = new FirebaseListAdapter<UserProject>(this, UserProject.class, R.layout.project_listview_row, userProjectReference) {
+            @Override
+            protected void populateView(View v, UserProject model, int position) {
+                Log.i(Constants.Log.TAG_PROJECT_LIST, " get model value " + model.getName());
+                mProjectNameTextView = (TextView) v.findViewById(R.id.tv_project_listview_row_name);
+                mProjectNameTextView.setText(model.getName());
+            }
+        };
+        mProjectListView.setAdapter(mProjectListAdapter);
+    }
+
+    private void setListViewOnItemClickListener(){
+
+        mProjectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String projectKey = mProjectListAdapter.getRef(i).getKey();
+                Log.i(Constants.Log.TAG_PROJECT_LIST, "ProjectDesk.class is :" + ProjectDesk.class);
+
+                Intent intent  = new Intent(ProjectList.this, ProjectDesk.class);
+                intent.putExtra(Constants.Extra.CURRENT_PROJECT_KEY, projectKey);
+                startActivity(intent);
+            }
+        });
+
+    }
+
 }

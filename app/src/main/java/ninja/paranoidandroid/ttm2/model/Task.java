@@ -1,10 +1,13 @@
 package ninja.paranoidandroid.ttm2.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by anton on 08.12.16.
  */
 
-public class Task {
+public class Task implements Parcelable{
 
     private String name;
     private String description;
@@ -30,6 +33,31 @@ public class Task {
         this.status = status;
         this.priority = priority;
     }
+
+    public Task(Parcel parcel){
+
+        name = parcel.readString();
+        description = parcel.readString();
+        startDate = parcel.readString();
+        endDate = parcel.readString();
+        budget = parcel.readDouble();
+        note = parcel.readString();
+        report = parcel.readString();
+        status = false;
+        priority = parcel.readInt();
+
+    }
+
+    public static final Parcelable.Creator<Task> CREATOR
+            = new Parcelable.Creator<Task>() {
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -101,5 +129,24 @@ public class Task {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeString(startDate);
+        parcel.writeString(endDate);
+        parcel.writeDouble(budget);
+        parcel.writeString(note);
+        parcel.writeString(report);
+        parcel.writeInt(priority);
+
     }
 }

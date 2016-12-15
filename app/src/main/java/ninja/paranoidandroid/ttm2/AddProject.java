@@ -72,11 +72,16 @@ public class AddProject extends AppCompatActivity {
         mOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 createProject();
+                if(mProject == null){
+                    Log.i(Constants.Log.TAG_ADD_PROJECT, "mProject is null.");
+                }
                 Intent intent = new Intent(AddProject.this, ProjectList.class);
                 intent.putExtra(Constants.Extra.ADD_PROJECT_NEW_PROJECT, mProject);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
+
             }
         });
 

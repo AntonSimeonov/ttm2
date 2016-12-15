@@ -1,12 +1,15 @@
 package ninja.paranoidandroid.ttm2.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
  * Created by anton on 08.12.16.
  */
 
-public class Project implements Serializable{
+public class Project implements Parcelable{
 
     private String name;
     private String description;
@@ -29,6 +32,27 @@ public class Project implements Serializable{
         this.result = result;
         this.goal = goal;
     }
+
+    public Project(Parcel parcel){
+        name = parcel.readString();
+        description = parcel.readString();
+        startDate = parcel.readString();
+        endDate = parcel.readString();
+        result = parcel.readString();
+        goal = parcel.readString();
+        budget = parcel.readDouble();
+    }
+
+    public static final Parcelable.Creator<Project> CREATOR
+            = new Parcelable.Creator<Project>() {
+        public Project createFromParcel(Parcel in) {
+            return new Project(in);
+        }
+
+        public Project[] newArray(int size) {
+            return new Project[size];
+        }
+    };
 
     public String getUsers() {
         return users;
@@ -92,5 +116,21 @@ public class Project implements Serializable{
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeString(startDate);
+        parcel.writeString(endDate);
+        parcel.writeString(goal);
+        parcel.writeString(result);
+        parcel.writeDouble(budget);
     }
 }

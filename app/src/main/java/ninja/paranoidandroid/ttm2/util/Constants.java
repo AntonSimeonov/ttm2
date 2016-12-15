@@ -17,6 +17,8 @@ public final class Constants {
         public final static String TAG_ADD_PROJECT = "log.ADD_PROJECT";
         public final static String TAG_ADD_TASK = "log.ADD_TASK";
         public final static String TAG_PROJECT_LIST = "log.PROJECT_LIST";
+        public final static String TAG_PROJECT_DESK = "log.PROJECT_DESK";
+        public final static String TAG_TASK_LIST_FRAGMENT = "log.TASK_LIST_FRAGMENT";
 
     }
 
@@ -47,11 +49,18 @@ public final class Constants {
 
         //AddProject
         public final static int CREATE_PROJECT_REQUEST_CODE = 1;
+        public final static int CREATE_TASK_REQUEST_CODE = 2;
 
     }
 
     public static class Extra{
         public final static String ADD_PROJECT_NEW_PROJECT = "extra.NEW_PROJECT";
+        public final static String CURRENT_PROJECT_KEY = "extra.CURRENT_PROJECT_KEY";
+        public final static String ADD_TASK = "extra.NEW_TASK";
+    }
+
+    public static class Fragment{
+        public final static String POSITION = "position";
     }
 
 }
