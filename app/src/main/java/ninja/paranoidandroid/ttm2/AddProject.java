@@ -2,7 +2,6 @@ package ninja.paranoidandroid.ttm2;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.provider.SyncStateContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -78,7 +77,7 @@ public class AddProject extends AppCompatActivity {
                     Log.i(Constants.Log.TAG_ADD_PROJECT, "mProject is null.");
                 }
                 Intent intent = new Intent(AddProject.this, ProjectList.class);
-                intent.putExtra(Constants.Extra.ADD_PROJECT_NEW_PROJECT, mProject);
+                intent.putExtra(Constants.Extra.NEW_PROJECT, mProject);
                 setResult(Activity.RESULT_OK, intent);
                 finish();
 

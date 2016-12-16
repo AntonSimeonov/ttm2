@@ -21,6 +21,7 @@ import ninja.paranoidandroid.ttm2.tab.ChatFragment;
 import ninja.paranoidandroid.ttm2.tab.DrawFragment;
 import ninja.paranoidandroid.ttm2.tab.TaskListFragment;
 import ninja.paranoidandroid.ttm2.util.Constants;
+import ninja.paranoidandroid.ttm2.util.FirebaseQuery;
 
 public class ProjectDesk extends AppCompatActivity {
 
@@ -33,6 +34,7 @@ public class ProjectDesk extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private FloatingActionButton mFab;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -40,6 +42,7 @@ public class ProjectDesk extends AppCompatActivity {
     private ViewPager mViewPager;
 
     private String mProjectPushId;
+    private String mProjectChatPushId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class ProjectDesk extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         extractProjectPushId();
+        setProjectChatPushId();
 //        // Create the adapter that will return a fragment for each of the three
 //        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -59,8 +63,8 @@ public class ProjectDesk extends AppCompatActivity {
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -97,7 +101,16 @@ public class ProjectDesk extends AppCompatActivity {
 
     private void extractProjectPushId(){
         mProjectPushId = getIntent().getStringExtra(Constants.Extra.CURRENT_PROJECT_KEY);
-        Log.i(Constants.Log.TAG_PROJECT_DESK, "extractProjectPushId() method mProjectPushId is: " + mProjectPushId);
+        //Log.i(Constants.Log.TAG_PROJECT_DESK, "extractProjectPushId() method mProjectPushId is: " + mProjectPushId);
+
+    }
+
+    private void setProjectChatPushId(){
+        mProjectChatPushId = FirebaseQuery.getChatId(mProjectPushId);
+    }
+
+    public String getProjectChatPushId(){
+        return mProjectChatPushId;
     }
 
     public String getProjectPushId(){
@@ -137,12 +150,15 @@ public class ProjectDesk extends AppCompatActivity {
             //return PlaceholderFragment.newInstance(position + 1);
             switch (position){
                 case 0:
+
                     return TaskListFragment.newInstance(position);
 
                 case 1:
+
                     return ChatFragment.newInstance(position);
 
                 case 2:
+
                     return DrawFragment.newInstance(position);
                 default:
 

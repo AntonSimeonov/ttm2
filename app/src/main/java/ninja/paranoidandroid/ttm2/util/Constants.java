@@ -19,6 +19,7 @@ public final class Constants {
         public final static String TAG_PROJECT_LIST = "log.PROJECT_LIST";
         public final static String TAG_PROJECT_DESK = "log.PROJECT_DESK";
         public final static String TAG_TASK_LIST_FRAGMENT = "log.TASK_LIST_FRAGMENT";
+        public final static String TAG_FIREBASE_QUERY = "log.FIREBASE_QUERY";
 
     }
 
@@ -27,6 +28,7 @@ public final class Constants {
         //project
         public final static String PROJECT = "project";
         public final static String PROJECT_USERS = "users";
+        public final static String PROJECT_CHAT = "projectChat";
         //user
         public final static String USER = "user";
         public final static String USER_EMAIL = "email";
@@ -54,9 +56,10 @@ public final class Constants {
     }
 
     public static class Extra{
-        public final static String ADD_PROJECT_NEW_PROJECT = "extra.NEW_PROJECT";
+        public final static String NEW_PROJECT = "extra.NEW_PROJECT";
         public final static String CURRENT_PROJECT_KEY = "extra.CURRENT_PROJECT_KEY";
         public final static String ADD_TASK = "extra.NEW_TASK";
+        public final static String CHAT_ID = "extra.CHAT_ID";
     }
 
     public static class Fragment{

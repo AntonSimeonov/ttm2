@@ -17,7 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import ninja.paranoidandroid.ttm2.model.Chat;
 import ninja.paranoidandroid.ttm2.model.Project;
+import ninja.paranoidandroid.ttm2.model.ProjectChat;
 import ninja.paranoidandroid.ttm2.model.ProjectUser;
 import ninja.paranoidandroid.ttm2.model.UserProject;
 import ninja.paranoidandroid.ttm2.util.Constants;
@@ -38,6 +40,7 @@ public class ProjectList extends AppCompatActivity {
 
     //User data
     private String mUserFirebaseAuthId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +110,7 @@ public class ProjectList extends AppCompatActivity {
 
     private void writeNewProjectToFireBase(Intent intent){
         Project project = null;
-        project = intent.getParcelableExtra(Constants.Extra.ADD_PROJECT_NEW_PROJECT);
+        project = intent.getParcelableExtra(Constants.Extra.NEW_PROJECT);
         if(project != null) {
 
            //project = new Project("Proj name", "project description", "22.4.4", "3434", 3535, "result", "hjsdfj");
@@ -119,14 +122,26 @@ public class ProjectList extends AppCompatActivity {
             String newProjectFirebasePushKey = newProjectFirebaseReference.getKey();
             newProjectFirebaseReference.setValue(project);
 
-            //in user projects note
+            //in user projects node
             DatabaseReference newUserProjectFirebaseReference = mDatabaseReference.child(Constants.Firebase.USER + "/" + mUserFirebaseAuthId)
                     .child(Constants.Firebase.USER_PROJECTS + "/" + newProjectFirebasePushKey);
             newUserProjectFirebaseReference.setValue(newUserProject);
 
-            //in project users note
+            //in project users node
             mDatabaseReference.child(Constants.Firebase.PROJECT + "/" + newProjectFirebasePushKey + "/" +
                     Constants.Firebase.PROJECT_USERS + "/" + mUserFirebaseAuthId).setValue(newProjectUser);
+            //CHAT setup
+            //in chat node
+            DatabaseReference newChatReference = mDatabaseReference.child(Constants.Firebase.CHAT);
+            String newChatFirebasePushKey = newChatReference.push().getKey();
+            newChatReference.setValue(new Chat(project.getName()));
+
+            //in project chat node
+            mDatabaseReference.child(Constants.Firebase.PROJECT + "/" + newProjectFirebasePushKey + "/" + Constants.Firebase.PROJECT_CHAT)
+                    .setValue(newChatFirebasePushKey);
+
+            // in chat messageds node
+            //mDatabaseReference.child(Constants.Firebase.CHAT_MESSAGES + "/" + newProjectFirebasePushKey + "/" + newChatFirebasePushKey);
         }
         }
 
@@ -164,8 +179,8 @@ public class ProjectList extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String projectKey = mProjectListAdapter.getRef(i).getKey();
                 Log.i(Constants.Log.TAG_PROJECT_LIST, "ProjectDesk.class is :" + ProjectDesk.class);
-
                 Intent intent  = new Intent(ProjectList.this, ProjectDesk.class);
+
                 intent.putExtra(Constants.Extra.CURRENT_PROJECT_KEY, projectKey);
                 startActivity(intent);
             }
