@@ -44,6 +44,7 @@ public class TaskListFragment extends Fragment {
     //Activity reference
     private ProjectDesk mProjectDesk;
     private String mProjectPushId;
+    //private String mChatPushId;
 
     private Task mTask;
 
@@ -60,13 +61,27 @@ public class TaskListFragment extends Fragment {
         return fragment;
     }
 
+    public static TaskListFragment newInstance(String projectPushId){
+        TaskListFragment fragment = new TaskListFragment();
+        Bundle args = new Bundle();
+        args.putString(Constants.Fragment.PROJECT_PUSH_ID, projectPushId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference();
+//        mFirebaseDatabase = FirebaseDatabase.getInstance();
+//        mDatabaseReference = mFirebaseDatabase.getReference();
 
+//        Bundle bundle = getArguments();
+//        mProjectPushId = bundle.getString(Constants.Fragment.PROJECT_PUSH_ID);
+        //mChatPushId = bundle.getString(Constants.Fragment.CHAT_PUSH_ID);
+
+        //Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "In onCreate(), project push id is: " + mProjectPushId);
+       // Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "In onCreate(), chat push id is: " + mChatPushId);
 
     }
 
@@ -80,16 +95,15 @@ public class TaskListFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-
-    }
-
     @Override
     public void onStart() {
         super.onStart();
         //Here we implement
-        DatabaseReference projectTasksReference = mDatabaseReference.child(Constants.Firebase.PROJECT_TASKS + "/" + mProjectDesk.getProjectPushId());
+
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mDatabaseReference = mFirebaseDatabase.getReference();
+
+        DatabaseReference projectTasksReference = mDatabaseReference.child(Constants.Firebase.PROJECT_TASKS + "/" + getArguments().getString(Constants.Fragment.PROJECT_PUSH_ID));
         mFirebaseListAdapter = new FirebaseListAdapter<ProjectTask>(mProjectDesk, ProjectTask.class, R.layout.task_listview_row, projectTasksReference) {
             @Override
             protected void populateView(View v, ProjectTask model, int position) {
@@ -107,8 +121,8 @@ public class TaskListFragment extends Fragment {
         super.onAttach(context);
 
         mProjectDesk = (ProjectDesk) context;
-        mProjectPushId = mProjectDesk.getProjectPushId();
-        Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "onAttach() method mProjectPushId is: " + mProjectPushId);
+//        mProjectPushId = mProjectDesk.getProjectPushId();
+//        Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "onAttach() method mProjectPushId is: " + mProjectPushId);
 
     }
 
@@ -118,7 +132,7 @@ public class TaskListFragment extends Fragment {
 
     }
 
-    public void setTask(Task task, String projectPushId){
+    public void setTask(Task task){
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mFirebaseDatabase.getReference();
@@ -133,10 +147,11 @@ public class TaskListFragment extends Fragment {
             String newTaskPushKey = newTaskReference.getKey();
             newTaskReference.setValue(mTask);
 
-            Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "project push id is: " + projectPushId);
+            //Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "In setTask(), project push id is: " + getArguments().getString(Constants.Fragment.PROJECT_PUSH_ID));
+            //Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "In setTask(), chat push id is: " + mChatPushId);
 
-            //Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "conacat value is: " + Constants.Firebase.PROJECT_TASKS + "/" + projectPushId + "/" + newTaskPushKey);
-            DatabaseReference newProjectTaskReference = mDatabaseReference.child(Constants.Firebase.PROJECT_TASKS + "/" + projectPushId + "/" + newTaskPushKey);
+            //Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "conacat value is: " + Constants.Firebase.PROJECT_TASKS + "/" + mProjectPushId + "/" + newTaskPushKey);
+            DatabaseReference newProjectTaskReference = mDatabaseReference.child(Constants.Firebase.PROJECT_TASKS + "/" + getArguments().getString(Constants.Fragment.PROJECT_PUSH_ID) + "/" + newTaskPushKey);
             newProjectTaskReference.setValue(projectTask);
 
         }

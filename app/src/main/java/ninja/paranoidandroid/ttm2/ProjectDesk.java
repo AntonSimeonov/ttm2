@@ -25,24 +25,15 @@ import ninja.paranoidandroid.ttm2.util.FirebaseQuery;
 
 public class ProjectDesk extends AppCompatActivity {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private FloatingActionButton mFab;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
+
     private ViewPager mViewPager;
 
     private String mProjectPushId;
-    private String mProjectChatPushId;
+    //private String mProjectChatPushId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +44,8 @@ public class ProjectDesk extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         extractProjectPushId();
-        setProjectChatPushId();
+        //extractProjectChatPushId();
+        //setProjectChatPushId();
 //        // Create the adapter that will return a fragment for each of the three
 //        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -105,14 +97,7 @@ public class ProjectDesk extends AppCompatActivity {
 
     }
 
-    private void setProjectChatPushId(){
-        mProjectChatPushId = FirebaseQuery.getChatId(mProjectPushId);
-    }
-
-    public String getProjectChatPushId(){
-        return mProjectChatPushId;
-    }
-
+    //Get project push id
     public String getProjectPushId(){
         return mProjectPushId;
     }
@@ -128,15 +113,12 @@ public class ProjectDesk extends AppCompatActivity {
                 TaskListFragment taskListFragment = (TaskListFragment) mSectionsPagerAdapter.getItem(0);
                 Task task = data.getParcelableExtra(Constants.Extra.ADD_TASK);
 
-                taskListFragment.setTask(task, mProjectPushId);
+                taskListFragment.setTask(task);
             }
         }
     }
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -151,11 +133,11 @@ public class ProjectDesk extends AppCompatActivity {
             switch (position){
                 case 0:
 
-                    return TaskListFragment.newInstance(position);
+                    return TaskListFragment.newInstance(mProjectPushId);
 
                 case 1:
 
-                    return ChatFragment.newInstance(position);
+                    return ChatFragment.newInstance(mProjectPushId);
 
                 case 2:
 

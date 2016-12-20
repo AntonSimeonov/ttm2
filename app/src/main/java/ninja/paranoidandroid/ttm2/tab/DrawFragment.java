@@ -28,6 +28,15 @@ public class DrawFragment extends Fragment {
         return fragment;
     }
 
+    public static DrawFragment newInstance(String projectPushId, String chatPushId){
+        DrawFragment fragment = new DrawFragment();
+        Bundle args = new Bundle();
+        args.putString(Constants.Fragment.PROJECT_PUSH_ID, projectPushId);
+        args.putString(Constants.Fragment.CHAT_PUSH_ID, chatPushId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

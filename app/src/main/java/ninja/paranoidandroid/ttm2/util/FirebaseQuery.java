@@ -14,50 +14,62 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FirebaseQuery {
 
-    public static String getChatId(String projectPushId){
+    private static String mChatId;
 
-        //final String chatId = null;
+    public String getChatId(){
+        return mChatId;
+    }
 
-        final StringTransport stringTransport = new StringTransport();
+
+    public String extractChatId(String projectPushId){
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference();
 
+        final ValContainer<String> chatIdContainer = new ValContainer<>();
+
         //Log.i(Constants.Log.TAG_FIREBASE_QUERY, "child item is: " + Constants.Firebase.PROJECT + "/" + projectPushId + Constants.Firebase.PROJECT_CHAT);
         DatabaseReference referenceWithChatId = databaseReference.child(Constants.Firebase.PROJECT + "/" + projectPushId + "/" + Constants.Firebase.PROJECT_CHAT);
         referenceWithChatId.addListenerForSingleValueEvent(new ValueEventListener() {
+           // private String chatId;
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               String chatId = dataSnapshot.getValue(String.class);
-                stringTransport.setmChatId(chatId);
-                //Log.i(Constants.Log.TAG_FIREBASE_QUERY, "query for chat id: " + chatId);
+                FirebaseQuery.mChatId = dataSnapshot.getValue(String.class);
+                chatIdContainer.setVal(mChatId);
+                Log.i(Constants.Log.TAG_FIREBASE_QUERY, "In onDataChange(), chat id: " + chatIdContainer.getVal());
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
+            public String getChatId(){
+
+                return null;
+            }
         });
-        return stringTransport.getmChatId();
+
+        Log.i(Constants.Log.TAG_FIREBASE_QUERY, "In extractChatId(), chat id: " + FirebaseQuery.mChatId);
+        return mChatId;
     }
 
-    private static class StringTransport{
+    public class ValContainer<T> {
+        private T val;
 
-        private String mChatId;
-
-        public StringTransport(String mChatId) {
-            this.mChatId = mChatId;
+        public ValContainer() {
         }
 
-        public StringTransport() {
+        public ValContainer(T v) {
+            this.val = v;
         }
 
-        public String getmChatId() {
-            return mChatId;
+        public T getVal() {
+            return val;
         }
 
-        public void setmChatId(String mChatId) {
-            this.mChatId = mChatId;
+        public void setVal(T val) {
+            this.val = val;
         }
     }
 

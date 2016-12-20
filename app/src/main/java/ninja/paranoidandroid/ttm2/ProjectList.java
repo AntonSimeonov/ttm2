@@ -23,6 +23,7 @@ import ninja.paranoidandroid.ttm2.model.ProjectChat;
 import ninja.paranoidandroid.ttm2.model.ProjectUser;
 import ninja.paranoidandroid.ttm2.model.UserProject;
 import ninja.paranoidandroid.ttm2.util.Constants;
+import ninja.paranoidandroid.ttm2.util.FirebaseQuery;
 
 public class ProjectList extends AppCompatActivity {
 
@@ -41,6 +42,7 @@ public class ProjectList extends AppCompatActivity {
     //User data
     private String mUserFirebaseAuthId;
 
+    private String mPickedprojectChatPushId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,8 +134,8 @@ public class ProjectList extends AppCompatActivity {
                     Constants.Firebase.PROJECT_USERS + "/" + mUserFirebaseAuthId).setValue(newProjectUser);
             //CHAT setup
             //in chat node
-            DatabaseReference newChatReference = mDatabaseReference.child(Constants.Firebase.CHAT);
-            String newChatFirebasePushKey = newChatReference.push().getKey();
+            DatabaseReference newChatReference = mDatabaseReference.child(Constants.Firebase.CHAT).push();
+            String newChatFirebasePushKey = newChatReference.getKey();
             newChatReference.setValue(new Chat(project.getName()));
 
             //in project chat node
@@ -147,6 +149,10 @@ public class ProjectList extends AppCompatActivity {
 
     private void getFirebaseAuthUserId(){
        mUserFirebaseAuthId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    public String getPickedprojectChatPushId(){
+        return mPickedprojectChatPushId;
     }
 
     @Override
@@ -178,10 +184,14 @@ public class ProjectList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String projectKey = mProjectListAdapter.getRef(i).getKey();
-                Log.i(Constants.Log.TAG_PROJECT_LIST, "ProjectDesk.class is :" + ProjectDesk.class);
-                Intent intent  = new Intent(ProjectList.this, ProjectDesk.class);
 
+                //mPickedprojectChatPushId = new FirebaseQuery().extractChatId(projectKey);
+
+                //Log.i(Constants.Log.TAG_PROJECT_LIST, "chat key is :" + mPickedprojectChatPushId);
+
+                Intent intent  = new Intent(ProjectList.this, ProjectDesk.class);
                 intent.putExtra(Constants.Extra.CURRENT_PROJECT_KEY, projectKey);
+               // intent.putExtra(Constants.Extra.CURRENT_CHAT_KEY, chatKey);
                 startActivity(intent);
             }
         });

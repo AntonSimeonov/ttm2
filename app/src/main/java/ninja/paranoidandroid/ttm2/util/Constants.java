@@ -20,6 +20,7 @@ public final class Constants {
         public final static String TAG_PROJECT_DESK = "log.PROJECT_DESK";
         public final static String TAG_TASK_LIST_FRAGMENT = "log.TASK_LIST_FRAGMENT";
         public final static String TAG_FIREBASE_QUERY = "log.FIREBASE_QUERY";
+        public final static String TAG_CHAT_FRAGMENT = "log.CHAT_FRAGMENT";
 
     }
 
@@ -60,10 +61,13 @@ public final class Constants {
         public final static String CURRENT_PROJECT_KEY = "extra.CURRENT_PROJECT_KEY";
         public final static String ADD_TASK = "extra.NEW_TASK";
         public final static String CHAT_ID = "extra.CHAT_ID";
+        public final static String CURRENT_CHAT_KEY = "extra.CURRENT_CHAT_KEY";
     }
 
     public static class Fragment{
         public final static String POSITION = "position";
+        public final static String PROJECT_PUSH_ID = "PROJECT_PUSH_ID";
+        public final static String CHAT_PUSH_ID = "CHAT_PUSH_ID";
     }
 
 }
