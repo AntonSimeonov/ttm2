@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import ninja.paranoidandroid.ttm2.ProjectDesk;
 import ninja.paranoidandroid.ttm2.R;
+import ninja.paranoidandroid.ttm2.TaskInfoActivity;
 import ninja.paranoidandroid.ttm2.model.ProjectTask;
 import ninja.paranoidandroid.ttm2.model.Task;
 import ninja.paranoidandroid.ttm2.util.Constants;
@@ -91,6 +93,7 @@ public class TaskListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_task_list, container, false);
         mTaskListView = (ListView) view.findViewById(R.id.lv_fragment_task_list);
+        setOnItemClickListener();
 
         return view;
     }
@@ -155,7 +158,22 @@ public class TaskListFragment extends Fragment {
             newProjectTaskReference.setValue(projectTask);
 
         }
+    }
 
+    private void setOnItemClickListener(){
+
+        mTaskListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String taskKey = mFirebaseListAdapter.getRef(position).getKey();
+
+                Intent intent = new Intent(mProjectDesk, TaskInfoActivity.class);
+                intent.putExtra(Constants.Extra.CURRENT_TASK_KEY, taskKey);
+                startActivity(intent);
+
+            }
+        });
 
     }
+
 }

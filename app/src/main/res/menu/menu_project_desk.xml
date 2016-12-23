@@ -7,4 +7,9 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_project_desk"
+        android:title="Logout"
+        app:showAsAction="never"
+        />
 </menu>

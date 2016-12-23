@@ -32,4 +32,8 @@ public class TimeStamp {
         return calendar.getTime().toString();
     }
 
+    public String getSimpleTimeStamp(){
+        return new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    }
+
 }

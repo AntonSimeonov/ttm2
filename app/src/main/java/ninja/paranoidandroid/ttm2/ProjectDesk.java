@@ -18,17 +18,16 @@ import android.view.View;
 
 import ninja.paranoidandroid.ttm2.model.Task;
 import ninja.paranoidandroid.ttm2.tab.ChatFragment;
-import ninja.paranoidandroid.ttm2.tab.DrawFragment;
+import ninja.paranoidandroid.ttm2.tab.FilesFragment;
+import ninja.paranoidandroid.ttm2.tab.ProjectStatusFragment;
 import ninja.paranoidandroid.ttm2.tab.TaskListFragment;
 import ninja.paranoidandroid.ttm2.util.Constants;
-import ninja.paranoidandroid.ttm2.util.FirebaseQuery;
 
 public class ProjectDesk extends AppCompatActivity {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private FloatingActionButton mFab;
-
 
     private ViewPager mViewPager;
 
@@ -83,10 +82,19 @@ public class ProjectDesk extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch(id){
+
+            case R.id.menu_project_desk:
+                return true;
+            case R.id.action_settings:
+                return true;
+
         }
+
+        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -137,11 +145,16 @@ public class ProjectDesk extends AppCompatActivity {
 
                 case 1:
 
-                    return ChatFragment.newInstance(mProjectPushId);
+                    return ProjectStatusFragment.newInstance(mProjectPushId);
 
                 case 2:
 
-                    return DrawFragment.newInstance(position);
+                    return FilesFragment.newInstance(mProjectPushId);
+
+                case 3:
+
+                    return ChatFragment.newInstance(mProjectPushId);
+
                 default:
 
                     break;
@@ -153,18 +166,20 @@ public class ProjectDesk extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Task list";
+                    return "Tasks";
                 case 1:
-                    return "Chat";
+                    return "Status";
                 case 2:
-                    return "Draw";
+                    return "Files";
+                case 3:
+                    return "Chat";
             }
             return null;
         }

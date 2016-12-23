@@ -21,7 +21,7 @@ public final class Constants {
         public final static String TAG_TASK_LIST_FRAGMENT = "log.TASK_LIST_FRAGMENT";
         public final static String TAG_FIREBASE_QUERY = "log.FIREBASE_QUERY";
         public final static String TAG_CHAT_FRAGMENT = "log.CHAT_FRAGMENT";
-
+        public final static String TAG_TASK_INFO_ACTIVITY = "log.TASK_INFO_ACTIVITY";
     }
 
     public static class Firebase{
@@ -48,11 +48,18 @@ public final class Constants {
 
     }
 
+    public static class FirebaseStorage{
+
+        public final static String URI = "gs://ttm2-77004.appspot.com";
+
+    }
+
     public static class SubActivity{
 
         //AddProject
         public final static int CREATE_PROJECT_REQUEST_CODE = 1;
         public final static int CREATE_TASK_REQUEST_CODE = 2;
+        public final static int SEARCH_IMG_REQUEST_CODE = 3;
 
     }
 
@@ -62,6 +69,7 @@ public final class Constants {
         public final static String ADD_TASK = "extra.NEW_TASK";
         public final static String CHAT_ID = "extra.CHAT_ID";
         public final static String CURRENT_CHAT_KEY = "extra.CURRENT_CHAT_KEY";
+        public final static String CURRENT_TASK_KEY = "extra.CURRENT_CHAT_KEY";
     }
 
     public static class Fragment{

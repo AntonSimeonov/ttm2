@@ -130,19 +130,14 @@ public class ChatFragment extends Fragment {
 
                     }
                 };
-
                 mMessagesListView.setAdapter(mFirebaseListAdapter);
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
-
-
     }
 
     @Override
@@ -200,19 +195,13 @@ public class ChatFragment extends Fragment {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-
                 });
-
-
             }
         });
-
     }
 
     private String getCurrentMessage(){
         String message = mMessageEditText.getText().toString();
         return message;
     }
-
-
 }
