@@ -60,6 +60,8 @@ public final class Constants {
         public final static int CREATE_PROJECT_REQUEST_CODE = 1;
         public final static int CREATE_TASK_REQUEST_CODE = 2;
         public final static int SEARCH_IMG_REQUEST_CODE = 3;
+        public final static int SEARCH_VIDEO_REQUEST_CODE = 4;
+        public final static int SEARCH_DOCUMENT_REQUEST_CODE = 5;
 
     }
 

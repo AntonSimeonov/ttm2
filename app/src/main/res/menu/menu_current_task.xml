@@ -2,7 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/menu_curent_task_save_file"
-        android:title="Save file"
+        android:id="@+id/menu_curent_task_save_img"
+        android:title="Save img"
+        />
+    <item
+        android:id="@+id/menu_curent_task_save_video"
+        android:title="Save video"
+        />
+    <item
+        android:id="@+id/menu_curent_task_save_document"
+        android:title="Save document"
         />
 </menu>

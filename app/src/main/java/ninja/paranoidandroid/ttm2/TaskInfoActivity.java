@@ -14,8 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -109,36 +107,19 @@ public class TaskInfoActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
+        Uri uri = data.getData();
         if(Constants.SubActivity.SEARCH_IMG_REQUEST_CODE == requestCode && Activity.RESULT_OK == resultCode){
-            //initFirebaseStorage();
-            Uri uri = data.getData();
-            mFirebaseStorage = FirebaseStorage.getInstance();
-            StorageReference storageReference = mFirebaseStorage.getReferenceFromUrl(Constants.FirebaseStorage.URI);
-            StorageReference testingImg = storageReference.child("testing.jpg");
-            UploadTask uploadTask = testingImg.putFile(uri);
 
-            Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), img name is: " + uri.getLastPathSegment().toString());
+            writeImgToFirebaseStorage(uri);
 
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onSuccess(), img is upladed.");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onFailure(), img is NOT upladed.");
-                }
-            });
-//            try {
-//
-//                Bitmap bitmap = getBitmapFromUri(uri);
-//                saveBitmapInFirebaseStorage(bitmap);
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+        }else if(Constants.SubActivity.SEARCH_VIDEO_REQUEST_CODE == requestCode && Activity.RESULT_OK == resultCode){
+
+            writeVideoToFirebaseStorage(uri);
+
+        }else if(Constants.SubActivity.SEARCH_DOCUMENT_REQUEST_CODE == requestCode && Activity.RESULT_OK == resultCode){
+
+            writeDocumentToFirebaseStorage(uri);
+
         }
 
 
@@ -156,8 +137,14 @@ public class TaskInfoActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         switch (id){
-            case R.id.menu_curent_task_save_file:
-                performFileSearch();
+            case R.id.menu_curent_task_save_img:
+                performImgSearch();
+                return true;
+            case R.id.menu_curent_task_save_video:
+                performVideoSearch();
+                return true;
+            case R.id.menu_curent_task_save_document:
+                performDocumentSearch();
                 return true;
         }
 
@@ -196,7 +183,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     }
 
 
-    private void performFileSearch() {
+    private void performImgSearch() {
 
         // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
         // browser.
@@ -213,6 +200,44 @@ public class TaskInfoActivity extends AppCompatActivity {
         intent.setType("image/*");
 
         startActivityForResult(intent, Constants.SubActivity.SEARCH_IMG_REQUEST_CODE);
+    }
+
+    private void performVideoSearch() {
+
+        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+        // browser.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+        // Filter to only show results that can be "opened", such as a
+        // file (as opposed to a list of contacts or timezones)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // Filter to show only images, using the image MIME data type.
+        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+        // To search for all documents available via installed storage providers,
+        // it would be "*/*".
+        intent.setType("video/*");
+
+        startActivityForResult(intent, Constants.SubActivity.SEARCH_VIDEO_REQUEST_CODE);
+    }
+
+    private void performDocumentSearch() {
+
+        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+        // browser.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+        // Filter to only show results that can be "opened", such as a
+        // file (as opposed to a list of contacts or timezones)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // Filter to show only images, using the image MIME data type.
+        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+        // To search for all documents available via installed storage providers,
+        // it would be "*/*".
+        intent.setType("application/pdf");
+
+        startActivityForResult(intent, Constants.SubActivity.SEARCH_DOCUMENT_REQUEST_CODE);
     }
 
     private Bitmap getBitmapFromUri(Uri uri) throws IOException {
@@ -236,6 +261,75 @@ public class TaskInfoActivity extends AppCompatActivity {
         storageReference.child("test.jpg");
 
         UploadTask uploadTask = storageReference.putBytes(data);
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onSuccess(), img is upladed.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onFailure(), img is NOT upladed.");
+            }
+        });
+    }
+
+    private void writeImgToFirebaseStorage(Uri uri){
+        String fileName = uri.getLastPathSegment();
+        //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), file name is: " + fileName);
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = mFirebaseStorage.getReferenceFromUrl(Constants.FirebaseStorage.URI);
+        StorageReference testingImg = storageReference.child("task" + "/" + mCurrentTaskPushid + "/" + fileName + ".jpg");
+        UploadTask uploadTask = testingImg.putFile(uri);
+
+        //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), img name is: " + uri.getLastPathSegment().toString());
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onSuccess(), img is upladed.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onFailure(), img is NOT upladed.");
+            }
+        });
+    }
+
+    private void writeVideoToFirebaseStorage(Uri uri){
+        String fileName = uri.getLastPathSegment();
+        //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), file name is: " + fileName);
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = mFirebaseStorage.getReferenceFromUrl(Constants.FirebaseStorage.URI);
+        StorageReference testingImg = storageReference.child("task" + "/" + mCurrentTaskPushid + "/" + fileName);
+        UploadTask uploadTask = testingImg.putFile(uri);
+
+        //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), img name is: " + uri.getLastPathSegment().toString());
+
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onSuccess(), img is upladed.");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onFailure(), img is NOT upladed.");
+            }
+        });
+    }
+
+    private void writeDocumentToFirebaseStorage(Uri uri){
+        String fileName = uri.getLastPathSegment();
+        //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), file name is: " + fileName);
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        StorageReference storageReference = mFirebaseStorage.getReferenceFromUrl(Constants.FirebaseStorage.URI);
+        StorageReference testingImg = storageReference.child("task" + "/" + mCurrentTaskPushid + "/" + fileName);
+        UploadTask uploadTask = testingImg.putFile(uri);
+
+        //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), img name is: " + uri.getLastPathSegment().toString());
 
         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
