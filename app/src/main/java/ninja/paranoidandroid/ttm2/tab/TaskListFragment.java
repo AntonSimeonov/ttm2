@@ -42,6 +42,9 @@ public class TaskListFragment extends Fragment {
     //UI
     private ListView mTaskListView;
     private TextView mNameTextView;
+    private TextView mNumberTextView;
+    private TextView mDescriptionTextView;
+    private TextView mEndDateTextView;
 
     //Activity reference
     private ProjectDesk mProjectDesk;
@@ -111,9 +114,31 @@ public class TaskListFragment extends Fragment {
             @Override
             protected void populateView(View v, ProjectTask model, int position) {
 
-                mNameTextView = (TextView) v.findViewById(R.id.tv_task_listview_row_name);
-                mNameTextView.setText(model.getName());
 
+
+                mNameTextView = (TextView) v.findViewById(R.id.tv_task_listview_row_name);
+                mNumberTextView = (TextView) v.findViewById(R.id.tv_task_listview_row_number);
+                mDescriptionTextView = (TextView) v.findViewById(R.id.tv_task_listview_row_description);
+                mEndDateTextView = (TextView) v.findViewById(R.id.tv_task_listview_row_end_date);
+
+                mNameTextView.setText(model.getName());
+                mEndDateTextView.setText(model.getEndDate());
+
+                int taskNumber = position + 1;
+                mNumberTextView.setText(taskNumber + ". ");
+
+
+
+
+                String descriptionString = model.getDescription();
+                if(descriptionString != null){
+                    if(descriptionString.length() >= 30){
+                        mDescriptionTextView.setText(descriptionString.substring(0, 30) + "...");
+                    }else{
+                        mDescriptionTextView.setText(descriptionString);
+                    }
+
+                }
             }
         };
         mTaskListView.setAdapter(mFirebaseListAdapter);
@@ -145,7 +170,7 @@ public class TaskListFragment extends Fragment {
         }else{
             Log.i(Constants.Log.TAG_TASK_LIST_FRAGMENT, "mDatabseReference is NOT null!!!");
             mTask = task;
-            ProjectTask projectTask = new ProjectTask(mTask.getName(), mTask.getStartDate(), mTask.getEndDate());
+            ProjectTask projectTask = new ProjectTask(mTask.getName(), mTask.getStartDate(), mTask.getEndDate(), mTask.getDescription());
             DatabaseReference newTaskReference = mDatabaseReference.child(Constants.Firebase.TASK).push();
             String newTaskPushKey = newTaskReference.getKey();
             newTaskReference.setValue(mTask);

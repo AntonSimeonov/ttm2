@@ -3,6 +3,7 @@ package ninja.paranoidandroid.ttm2;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -41,6 +42,7 @@ public class ProjectDesk extends AppCompatActivity {
         Log.i(Constants.Log.TAG_PROJECT_DESK, "onCreate method");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         extractProjectPushId();
         //extractProjectChatPushId();
@@ -48,9 +50,12 @@ public class ProjectDesk extends AppCompatActivity {
 //        // Create the adapter that will return a fragment for each of the three
 //        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
 //        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
@@ -145,13 +150,9 @@ public class ProjectDesk extends AppCompatActivity {
 
                 case 1:
 
-                    return ProjectStatusFragment.newInstance(mProjectPushId);
-
-                case 2:
-
                     return FilesFragment.newInstance(mProjectPushId);
 
-                case 3:
+                case 2:
 
                     return ChatFragment.newInstance(mProjectPushId);
 
@@ -166,7 +167,7 @@ public class ProjectDesk extends AppCompatActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 4;
+            return 3;
         }
 
         @Override
@@ -175,10 +176,8 @@ public class ProjectDesk extends AppCompatActivity {
                 case 0:
                     return "Tasks";
                 case 1:
-                    return "Status";
-                case 2:
                     return "Files";
-                case 3:
+                case 2:
                     return "Chat";
             }
             return null;

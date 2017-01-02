@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="50dp"
+    >
 
+    <TextView
+        android:id="@+id/tv_task_listview_row_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TaskNumber"
+        />
 
     <TextView
         android:id="@+id/tv_task_listview_row_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/TaskName"
+
+        android:layout_toRightOf="@id/tv_task_listview_row_number"
+        />
+    <TextView
+        android:id="@+id/tv_task_listview_row_end_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_task_listview_row_name"
+        style="@style/TaskEndDate"
+        />
+    <TextView
+        android:id="@+id/tv_task_listview_row_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TaskDescription"
+        android:layout_below="@id/tv_task_listview_row_end_date"
+        />
+    <ImageView
+        android:id="@+id/iv_task_listview_row_priority"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_star_border_black_48dp"
+        android:layout_alignParentRight="true"
         />
 
 </RelativeLayout>

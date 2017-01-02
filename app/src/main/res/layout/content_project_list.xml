@@ -17,6 +17,9 @@
         android:id="@+id/lv_content_project_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:dividerHeight="20dp"
+        android:divider="@android:color/transparent"
+
         />
 
 </RelativeLayout>

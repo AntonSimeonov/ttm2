@@ -9,14 +9,24 @@ public class ProjectTask {
     private String name;
     private String startDate;
     private String endDate;
+    private String description;
 
     public ProjectTask() {
     }
 
-    public ProjectTask(String name, String startDate, String endDate) {
+    public ProjectTask(String name, String startDate, String endDate, String description) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {

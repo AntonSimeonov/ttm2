@@ -33,7 +33,7 @@ public class InitDb extends AppCompatActivity {
 
     private void initProject(){
         Project project = new Project("First project", "My first project", "22.06.2017", "01.06.2017", 2405, " my result", "my goal");
-        ProjectTask projectTask = new ProjectTask("First project", "22.06.2017", "01.06.2017");
+        ProjectTask projectTask = new ProjectTask("First project", "22.06.2017", "01.06.2017", "desct");
         ProjectUser projectUser = new ProjectUser("Bob");
 
         DatabaseReference newProjectReference = mDatebaseReference.child("project").push();
