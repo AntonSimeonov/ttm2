@@ -56,6 +56,37 @@ public class ProjectDesk extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position){
+                    case 0:
+                        mFab.show();
+                        break;
+                    case 1:
+                        mFab.hide();
+                        break;
+                    case 2:
+                        mFab.hide();
+                        break;
+                    default:
+
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
 
