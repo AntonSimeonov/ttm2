@@ -10,10 +10,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ninja.paranoidandroid.ttm2.TaskInfoActivity">
 
+
     <TextView
         android:id="@+id/tv_activity_task_info_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        />
+    <Switch
+        android:id="@+id/s_ativity_task_info_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Redy"
+        android:textOff="Not redy"
+        android:layout_toRightOf="@id/tv_activity_task_info_name"
+
         />
     <TextView
         android:id="@+id/tv_activity_task_info_description"

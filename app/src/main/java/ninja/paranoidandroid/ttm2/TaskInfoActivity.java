@@ -14,7 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
+import ninja.paranoidandroid.ttm2.dialog.TaskReportDialogFragment;
 import ninja.paranoidandroid.ttm2.model.ProjectTaskFile;
 import ninja.paranoidandroid.ttm2.model.Task;
 import ninja.paranoidandroid.ttm2.util.Constants;
@@ -50,6 +53,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     private TextView mReportTextView;
     private TextView mStatusTextView;
     private TextView mPriorityTextView;
+    private Switch mStatusSwich;
     //private FrameLayout mAttachedFilesContainerFrameLayout;
     //FirebaseDatabase
     private FirebaseDatabase mFirebaseDatabase;
@@ -65,6 +69,7 @@ public class TaskInfoActivity extends AppCompatActivity {
 
     private String mCurrentTaskPushid;
     private String mCurrentProjectPushId;
+    //private boolean mIsRedy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,8 @@ public class TaskInfoActivity extends AppCompatActivity {
         getCurrentTaskPushId();
         getCurrentProjectPushId();
         initFirebaseAuth();
+        initFirebaseDatabaseElements();
+        getTaskStatusFormFirebaseDatabase();
        // initFirebaseStorage();
         initUI();
 
@@ -82,7 +89,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        initFirebaseDatabaseElements();
+        //initFirebaseDatabaseElements();
 
         mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -165,8 +172,12 @@ public class TaskInfoActivity extends AppCompatActivity {
         mReportTextView = (TextView) findViewById(R.id.tv_activity_task_info_report);
         mStatusTextView = (TextView) findViewById(R.id.tv_activity_task_info_status);
         mPriorityTextView = (TextView) findViewById(R.id.tv_activity_task_info_report);
+        mStatusSwich = (Switch) findViewById(R.id.s_ativity_task_info_status);
         //mAttachedFilesContainerFrameLayout = (FrameLayout) findViewById(R.id.fl_activity_task_info);
         setAttachedFilesFragmetn();
+        setOnCheckedChangedListener();
+
+
 
     }
 
@@ -198,6 +209,43 @@ public class TaskInfoActivity extends AppCompatActivity {
 
     private void getCurrentProjectPushId(){
         mCurrentProjectPushId = getIntent().getStringExtra(Constants.Extra.CURRENT_PROJECT_KEY);
+    }
+
+    private void setOnCheckedChangedListener(){
+
+        mStatusSwich.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/" + Constants.Firebase.STATUS).setValue(isChecked);
+
+                if(isChecked == true){
+                    TaskReportDialogFragment taskReportDialogFragment = TaskReportDialogFragment.newInstance(mCurrentProjectPushId, mCurrentTaskPushid);
+                    taskReportDialogFragment.show(getFragmentManager(), Constants.Dialog.TASK_REPORT_DIALOG_TAG);
+                }
+
+            }
+        });
+    }
+
+    private void getTaskStatusFormFirebaseDatabase(){
+
+        DatabaseReference databaseReference = mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/" + Constants.Firebase.STATUS);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                boolean isRedy = dataSnapshot.getValue(Boolean.class);
+                mStatusSwich.setChecked(isRedy);
+                Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In getTaskStatusFormFirebaseDatabase(), status value from firebase is: " + isRedy);
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

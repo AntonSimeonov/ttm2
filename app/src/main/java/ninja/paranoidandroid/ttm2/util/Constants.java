@@ -36,6 +36,8 @@ public final class Constants {
         public final static String USER_PROJECTS = "projects";
         //task
         public final static String TASK = "task";
+        public final static String STATUS = "status";
+        public final static String REPORT = "report";
 
 
         public final static String PROJECT_TASKS = "projectTasks";
@@ -79,6 +81,10 @@ public final class Constants {
         public final static String POSITION = "position";
         public final static String PROJECT_PUSH_ID = "PROJECT_PUSH_ID";
         public final static String CHAT_PUSH_ID = "CHAT_PUSH_ID";
+    }
+
+    public static class Dialog{
+        public final static String TASK_REPORT_DIALOG_TAG = "TASK_REPORT_DIALOG_TAG";
     }
 
 }

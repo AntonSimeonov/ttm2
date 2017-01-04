@@ -181,7 +181,7 @@ public class ProjectDesk extends AppCompatActivity {
 
                 case 1:
 
-                    return FilesFragment.newInstance(mProjectPushId);
+                    return ProjectStatusFragment.newInstance(mProjectPushId);
 
                 case 2:
 
@@ -207,7 +207,7 @@ public class ProjectDesk extends AppCompatActivity {
                 case 0:
                     return "Tasks";
                 case 1:
-                    return "Files";
+                    return "Status";
                 case 2:
                     return "Chat";
             }
