@@ -64,4 +64,10 @@
         android:layout_below="@id/tv_activity_task_info_status"
         />
 
+    <FrameLayout
+        android:id="@+id/fl_activity_task_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_activity_task_info_priority"
+        />
 </RelativeLayout>

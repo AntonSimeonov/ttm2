@@ -193,6 +193,7 @@ public class TaskListFragment extends Fragment {
                 String taskKey = mFirebaseListAdapter.getRef(position).getKey();
 
                 Intent intent = new Intent(mProjectDesk, TaskInfoActivity.class);
+                intent.putExtra(Constants.Extra.CURRENT_PROJECT_KEY, getArguments().getString(Constants.Fragment.PROJECT_PUSH_ID));
                 intent.putExtra(Constants.Extra.CURRENT_TASK_KEY, taskKey);
                 startActivity(intent);
 

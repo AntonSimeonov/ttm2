@@ -45,6 +45,7 @@ public final class Constants {
         public final static String CHAT = "chat";
         public final static String MESSAGE = "message";
         public final static String CHAT_MESSAGES = "chatMessages";
+        public final static String PROJECT_TASK_FILES = "projectTaskFiles";
 
     }
 

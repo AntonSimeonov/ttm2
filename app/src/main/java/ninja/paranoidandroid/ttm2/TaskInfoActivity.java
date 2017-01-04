@@ -1,6 +1,8 @@
 package ninja.paranoidandroid.ttm2;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,6 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
 
+import ninja.paranoidandroid.ttm2.model.ProjectTaskFile;
 import ninja.paranoidandroid.ttm2.model.Task;
 import ninja.paranoidandroid.ttm2.util.Constants;
 
@@ -46,11 +50,10 @@ public class TaskInfoActivity extends AppCompatActivity {
     private TextView mReportTextView;
     private TextView mStatusTextView;
     private TextView mPriorityTextView;
-
+    //private FrameLayout mAttachedFilesContainerFrameLayout;
     //FirebaseDatabase
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
-
 
     //Firebase UI
 
@@ -61,6 +64,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     private FirebaseStorage mFirebaseStorage;
 
     private String mCurrentTaskPushid;
+    private String mCurrentProjectPushId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class TaskInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_info);
 
         getCurrentTaskPushId();
+        getCurrentProjectPushId();
         initFirebaseAuth();
        // initFirebaseStorage();
         initUI();
@@ -121,8 +126,6 @@ public class TaskInfoActivity extends AppCompatActivity {
             writeDocumentToFirebaseStorage(uri);
 
         }
-
-
     }
 
     @Override
@@ -162,6 +165,17 @@ public class TaskInfoActivity extends AppCompatActivity {
         mReportTextView = (TextView) findViewById(R.id.tv_activity_task_info_report);
         mStatusTextView = (TextView) findViewById(R.id.tv_activity_task_info_status);
         mPriorityTextView = (TextView) findViewById(R.id.tv_activity_task_info_report);
+        //mAttachedFilesContainerFrameLayout = (FrameLayout) findViewById(R.id.fl_activity_task_info);
+        setAttachedFilesFragmetn();
+
+    }
+
+    private void setAttachedFilesFragmetn(){
+
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        //fragmentTransaction.add(AttachedFilesFragment.newInstance(mCurrentProjectPushId, mCurrentTaskPushid), R.id.fl_activity_task_info);
+        fragmentTransaction.add(R.id.fl_activity_task_info, AttachedFilesFragment.newInstance(mCurrentProjectPushId, mCurrentTaskPushid));
+        fragmentTransaction.commit();
 
     }
 
@@ -180,6 +194,10 @@ public class TaskInfoActivity extends AppCompatActivity {
 
     private void getCurrentTaskPushId(){
         mCurrentTaskPushid = getIntent().getStringExtra(Constants.Extra.CURRENT_TASK_KEY);
+    }
+
+    private void getCurrentProjectPushId(){
+        mCurrentProjectPushId = getIntent().getStringExtra(Constants.Extra.CURRENT_PROJECT_KEY);
     }
 
 
@@ -276,7 +294,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     }
 
     private void writeImgToFirebaseStorage(Uri uri){
-        String fileName = uri.getLastPathSegment();
+        final String fileName = uri.getLastPathSegment();
         //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), file name is: " + fileName);
         mFirebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = mFirebaseStorage.getReferenceFromUrl(Constants.FirebaseStorage.URI);
@@ -289,6 +307,12 @@ public class TaskInfoActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onSuccess(), img is upladed.");
+
+                ProjectTaskFile projectTaskFile = new ProjectTaskFile("task" + "/" + mCurrentTaskPushid + "/" + fileName + ".jpg", fileName + ".jpg");
+
+                DatabaseReference newProjectTaskFileRef = mDatabaseReference.child(Constants.Firebase.PROJECT_TASK_FILES + "/"
+                        + mCurrentProjectPushId + "/" + mCurrentTaskPushid).push();
+                newProjectTaskFileRef.setValue(projectTaskFile);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -299,7 +323,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     }
 
     private void writeVideoToFirebaseStorage(Uri uri){
-        String fileName = uri.getLastPathSegment();
+        final String fileName = uri.getLastPathSegment();
         //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), file name is: " + fileName);
         mFirebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = mFirebaseStorage.getReferenceFromUrl(Constants.FirebaseStorage.URI);
@@ -312,6 +336,13 @@ public class TaskInfoActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onSuccess(), img is upladed.");
+
+                ProjectTaskFile projectTaskFile = new ProjectTaskFile("task" + "/" + mCurrentTaskPushid + "/" + fileName + ".jpg", fileName + ".jpg");
+
+                DatabaseReference newProjectTaskFileRef = mDatabaseReference.child(Constants.Firebase.PROJECT_TASK_FILES + "/"
+                        + mCurrentProjectPushId + "/" + mCurrentTaskPushid).push();
+                newProjectTaskFileRef.setValue(projectTaskFile);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -322,7 +353,7 @@ public class TaskInfoActivity extends AppCompatActivity {
     }
 
     private void writeDocumentToFirebaseStorage(Uri uri){
-        String fileName = uri.getLastPathSegment();
+        final String fileName = uri.getLastPathSegment();
         //Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onActivityResult(), file name is: " + fileName);
         mFirebaseStorage = FirebaseStorage.getInstance();
         StorageReference storageReference = mFirebaseStorage.getReferenceFromUrl(Constants.FirebaseStorage.URI);
@@ -335,6 +366,13 @@ public class TaskInfoActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.i(Constants.Log.TAG_TASK_INFO_ACTIVITY, "In onSuccess(), img is upladed.");
+
+                ProjectTaskFile projectTaskFile = new ProjectTaskFile("task" + "/" + mCurrentTaskPushid + "/" + fileName + ".jpg", fileName + ".jpg");
+
+                DatabaseReference newProjectTaskFileRef = mDatabaseReference.child(Constants.Firebase.PROJECT_TASK_FILES + "/"
+                        + mCurrentProjectPushId + "/" + mCurrentTaskPushid).push();
+                newProjectTaskFileRef.setValue(projectTaskFile);
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
