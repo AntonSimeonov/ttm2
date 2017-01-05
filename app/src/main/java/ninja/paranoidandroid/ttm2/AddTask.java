@@ -48,13 +48,13 @@ public class AddTask extends AppCompatActivity {
 
         mName = (EditText) findViewById(R.id.et_activity_add_task_name);
         mDescription = (EditText) findViewById(R.id.et_activity_add_task_description);
-        mStartDate = (EditText) findViewById(R.id.et_activity_add_task_start_date);
-        mEndDate = (EditText) findViewById(R.id.et_activity_add_task_end_date);
-        mBudget = (EditText) findViewById(R.id.et_activity_add_task_budget);
-        mNote = (EditText) findViewById(R.id.et_activity_add_task_note);
-        mReport = (EditText) findViewById(R.id.et_activity_add_task_report);
-        mStatus = (EditText) findViewById(R.id.et_activity_add_task_status);
-        mPriority = (EditText) findViewById(R.id.et_activity_add_task_priority);
+//        mStartDate = (EditText) findViewById(R.id.et_activity_add_task_start_date);
+//        mEndDate = (EditText) findViewById(R.id.et_activity_add_task_end_date);
+//        mBudget = (EditText) findViewById(R.id.et_activity_add_task_budget);
+//        mNote = (EditText) findViewById(R.id.et_activity_add_task_note);
+//        mReport = (EditText) findViewById(R.id.et_activity_add_task_report);
+//        mStatus = (EditText) findViewById(R.id.et_activity_add_task_status);
+//        mPriority = (EditText) findViewById(R.id.et_activity_add_task_priority);
         mOk = (Button) findViewById(R.id.b_activity_add_task_ok);
         mCancel = (Button) findViewById(R.id.b_activity_add_task_cancel);
 
@@ -93,13 +93,20 @@ public class AddTask extends AppCompatActivity {
 
         String name = mName.getText().toString();
         String description = mDescription.getText().toString();
-        String startDate =  mStartDate.getText().toString();
-        String endDate = mEndDate.getText().toString();
-        double budget = Double.parseDouble(mBudget.getText().toString());
-        String note = mNote.getText().toString();
-        String report = mReport.getText().toString();
+//        String startDate =  mStartDate.getText().toString();
+//        String endDate = mEndDate.getText().toString();
+//        double budget = Double.parseDouble(mBudget.getText().toString());
+//        String note = mNote.getText().toString();
+//        String report = mReport.getText().toString();
+//        boolean status = false;
+//        int priority = Integer.parseInt(mPriority.getText().toString());
+        String startDate = "init";
+        String endDate = "No finish date.";
+        double budget = 0;
+        String note = "init";
+        String report = "init";
         boolean status = false;
-        int priority = Integer.parseInt(mPriority.getText().toString());
+        int priority = 1;
 
         mTask = new Task(name, description, startDate, endDate, budget, note, report, status, priority);
 

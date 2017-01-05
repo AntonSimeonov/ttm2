@@ -5,10 +5,8 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.google.firebase.database.DatabaseReference;
@@ -55,7 +53,7 @@ public class TaskReportDialogFragment extends DialogFragment {
                 String reportString = mTaskReportEditText.getText().toString();
 
                 mDatabaseReference.child(Constants.Firebase.TASK + "/" + getArguments().getString(Constants.Extra.CURRENT_TASK_KEY) + "/"
-                        + Constants.Firebase.REPORT).setValue(reportString);
+                        + Constants.Firebase.TASK_REPORT).setValue(reportString);
 
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

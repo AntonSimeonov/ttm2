@@ -3,6 +3,12 @@ package ninja.paranoidandroid.ttm2.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import ninja.paranoidandroid.ttm2.util.Constants;
+
 /**
  * Created by anton on 08.12.16.
  */
@@ -149,4 +155,26 @@ public class Task implements Parcelable{
         parcel.writeInt(priority);
 
     }
+
+    public Map<String, Object> toMapTaskDetiles(){
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put(Constants.Firebase.TASK_START_DATE, startDate);
+        result.put(Constants.Firebase.TASK_END_DATE, endDate);
+        result.put(Constants.Firebase.TASK_BUDGET, budget);
+        result.put(Constants.Firebase.TASK_NOTE, note);
+        result.put(Constants.Firebase.TASK_PRIORITY, priority);
+
+        return result;
+    }
+
+    public Map<String, Object> toMapProjectTaskDetiles(){
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put(Constants.Firebase.TASK_START_DATE, startDate);
+        result.put(Constants.Firebase.TASK_END_DATE, endDate);
+
+        return result;
+    }
+
 }

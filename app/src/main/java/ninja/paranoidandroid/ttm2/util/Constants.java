@@ -36,11 +36,19 @@ public final class Constants {
         public final static String USER_PROJECTS = "projects";
         //task
         public final static String TASK = "task";
-        public final static String STATUS = "status";
-        public final static String REPORT = "report";
-
+        public final static String TASK_STATUS = "status";
+        public final static String TASK_REPORT = "report";
+        public final static String TASK_START_DATE = "startDate";
+        public final static String TASK_END_DATE = "endDate";
+        public final static String TASK_BUDGET = "budget";
+        public final static String TASK_NOTE = "note";
+        public final static String TASK_PRIORITY = "priority";
 
         public final static String PROJECT_TASKS = "projectTasks";
+        public final static String PROJECT_TASKS_START_DATE = "startDate";
+        public final static String PROJECT_TASKS_END_DATE = "endDate";
+
+
         public final static String TASK_IMGS = "taskImgs";
         public final static String TASK_VIDS = "taskVids";
         public final static String TASK_USERS = "taskUsers";
@@ -65,6 +73,7 @@ public final class Constants {
         public final static int SEARCH_IMG_REQUEST_CODE = 3;
         public final static int SEARCH_VIDEO_REQUEST_CODE = 4;
         public final static int SEARCH_DOCUMENT_REQUEST_CODE = 5;
+        public final static int ADD_TASK_DETAILES = 6;
 
     }
 
@@ -75,6 +84,7 @@ public final class Constants {
         public final static String CHAT_ID = "extra.CHAT_ID";
         public final static String CURRENT_CHAT_KEY = "extra.CURRENT_CHAT_KEY";
         public final static String CURRENT_TASK_KEY = "extra.CURRENT_CHAT_KEY";
+        public final static String ADD_TASK_DETAILS = "extra.ADD_TASK_DETAILS";
     }
 
     public static class Fragment{

@@ -13,4 +13,8 @@
         android:id="@+id/menu_curent_task_save_document"
         android:title="Save document"
         />
+    <item
+        android:id="@+id/menu_current_task_add_details"
+        android:title="Add details"
+        />
 </menu>

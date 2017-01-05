@@ -15,63 +15,70 @@
         android:id="@+id/et_activity_add_task_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:lines="10"
         android:hint="Description"
         android:layout_below="@id/et_activity_add_task_name"
         />
-    <EditText
-        android:id="@+id/et_activity_add_task_start_date"
+    <FrameLayout
+        android:id="@+id/fl_activity_add_task_details_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Start date"
         android:layout_below="@id/et_activity_add_task_description"
         />
-    <EditText
-        android:id="@+id/et_activity_add_task_end_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="End date"
-        android:layout_below="@id/et_activity_add_task_start_date"
-        />
-    <EditText
-        android:id="@+id/et_activity_add_task_budget"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Budget"
-        android:layout_below="@id/et_activity_add_task_end_date"
-        />
-    <EditText
-        android:id="@+id/et_activity_add_task_note"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Note"
-        android:layout_below="@id/et_activity_add_task_budget"
-        />
-    <EditText
-        android:id="@+id/et_activity_add_task_report"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Report"
-        android:layout_below="@id/et_activity_add_task_note"
-        />
-    <EditText
-        android:id="@+id/et_activity_add_task_status"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Status"
-        android:layout_below="@id/et_activity_add_task_report"
-        />
-    <EditText
-        android:id="@+id/et_activity_add_task_priority"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Budget"
-        android:layout_below="@id/et_activity_add_task_status"
-        />
+    <!--<EditText-->
+        <!--android:id="@+id/et_activity_add_task_start_date"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Start date"-->
+        <!--android:layout_below="@id/et_activity_add_task_description"-->
+        <!--/>-->
+    <!--<EditText-->
+        <!--android:id="@+id/et_activity_add_task_end_date"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="End date"-->
+        <!--android:layout_below="@id/et_activity_add_task_start_date"-->
+        <!--/>-->
+    <!--<EditText-->
+        <!--android:id="@+id/et_activity_add_task_budget"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Budget"-->
+        <!--android:layout_below="@id/et_activity_add_task_end_date"-->
+        <!--/>-->
+    <!--<EditText-->
+        <!--android:id="@+id/et_activity_add_task_note"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Note"-->
+        <!--android:layout_below="@id/et_activity_add_task_budget"-->
+        <!--/>-->
+    <!--<EditText-->
+        <!--android:id="@+id/et_activity_add_task_report"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Report"-->
+        <!--android:layout_below="@id/et_activity_add_task_note"-->
+        <!--/>-->
+    <!--<EditText-->
+        <!--android:id="@+id/et_activity_add_task_status"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Status"-->
+        <!--android:layout_below="@id/et_activity_add_task_report"-->
+        <!--/>-->
+    <!--<EditText-->
+        <!--android:id="@+id/et_activity_add_task_priority"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Budget"-->
+        <!--android:layout_below="@id/et_activity_add_task_status"-->
+        <!--/>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@id/et_activity_add_task_priority"
+        android:layout_below="@id/fl_activity_add_task_details_container"
         android:weightSum="2"
         >
         <Button

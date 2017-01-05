@@ -42,7 +42,8 @@
             android:name=".ProjectDesk"
             android:label="@string/title_activity_project_desk"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".TaskInfoActivity"></activity>
+        <activity android:name=".TaskInfoActivity" />
+        <activity android:name=".TaskDetailsActivity"></activity>
     </application>
 
 </manifest>

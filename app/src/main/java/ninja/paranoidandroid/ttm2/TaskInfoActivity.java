@@ -1,8 +1,6 @@
 package ninja.paranoidandroid.ttm2;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +13,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
-import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -34,6 +31,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import ninja.paranoidandroid.ttm2.dialog.TaskReportDialogFragment;
 import ninja.paranoidandroid.ttm2.model.ProjectTaskFile;
@@ -132,6 +131,10 @@ public class TaskInfoActivity extends AppCompatActivity {
 
             writeDocumentToFirebaseStorage(uri);
 
+        }else if(Constants.SubActivity.ADD_TASK_DETAILES == requestCode && Activity.RESULT_OK == resultCode){
+
+            writeDetailsToCurrentTask(data);
+
         }
     }
 
@@ -155,6 +158,10 @@ public class TaskInfoActivity extends AppCompatActivity {
                 return true;
             case R.id.menu_curent_task_save_document:
                 performDocumentSearch();
+                return true;
+            case R.id.menu_current_task_add_details:
+                //call details UI
+                setMoreDetailsForCurrentTask();
                 return true;
         }
 
@@ -217,7 +224,7 @@ public class TaskInfoActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-                mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/" + Constants.Firebase.STATUS).setValue(isChecked);
+                mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/" + Constants.Firebase.TASK_STATUS).setValue(isChecked);
 
                 if(isChecked == true){
                     TaskReportDialogFragment taskReportDialogFragment = TaskReportDialogFragment.newInstance(mCurrentProjectPushId, mCurrentTaskPushid);
@@ -230,7 +237,7 @@ public class TaskInfoActivity extends AppCompatActivity {
 
     private void getTaskStatusFormFirebaseDatabase(){
 
-        DatabaseReference databaseReference = mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/" + Constants.Firebase.STATUS);
+        DatabaseReference databaseReference = mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/" + Constants.Firebase.TASK_STATUS);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -246,6 +253,42 @@ public class TaskInfoActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setMoreDetailsForCurrentTask(){
+        Intent intent = new Intent(this, TaskDetailsActivity.class);
+        startActivityForResult(intent, Constants.SubActivity.ADD_TASK_DETAILES);
+    }
+
+    private void writeDetailsToCurrentTask(Intent intent){
+
+        Task detailsTask = intent.getParcelableExtra(Constants.Extra.ADD_TASK_DETAILS);
+//        Map<String, Object> childUpdates = new HashMap<>();
+//
+//        Map<String, Object> taskDetails = detailsTask.toMapTaskDetiles();
+//        Map<String, Object> projectTaskDetails = detailsTask.toMapProjectTaskDetiles();
+//
+//        childUpdates.put(Constants.Firebase.TASK + "/" + mCurrentTaskPushid, taskDetails);
+//        childUpdates.put(Constants.Firebase.PROJECT_TASKS + "/" + mCurrentProjectPushId + "/" + mCurrentTaskPushid, projectTaskDetails);
+//
+//        mDatabaseReference.updateChildren(childUpdates);
+
+        mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/"
+                + Constants.Firebase.TASK_START_DATE).setValue(detailsTask.getStartDate());
+        mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/"
+                + Constants.Firebase.TASK_END_DATE).setValue(detailsTask.getEndDate());
+        mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/"
+                + Constants.Firebase.TASK_BUDGET).setValue(detailsTask.getBudget());
+        mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/"
+                + Constants.Firebase.TASK_NOTE).setValue(detailsTask.getNote());
+        mDatabaseReference.child(Constants.Firebase.TASK + "/" + mCurrentTaskPushid + "/"
+                + Constants.Firebase.TASK_PRIORITY).setValue(detailsTask.getPriority());
+
+        mDatabaseReference.child(Constants.Firebase.PROJECT_TASKS + "/" + mCurrentProjectPushId + "/" + mCurrentTaskPushid + "/"
+                + Constants.Firebase.PROJECT_TASKS_START_DATE).setValue(detailsTask.getStartDate());
+        mDatabaseReference.child(Constants.Firebase.PROJECT_TASKS + "/" + mCurrentProjectPushId + "/" + mCurrentTaskPushid + "/"
+                + Constants.Firebase.PROJECT_TASKS_END_DATE).setValue(detailsTask.getEndDate());
+
     }
 
 
